@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) Petr Panteleyev. All rights reserved.
+  Licensed under the BSD license. See LICENSE file in the project root for full license information.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.panteleyev</groupId>
+    <artifactId>ofx-parser</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>OFX Parser</description>
+    <url>https://github.com/petr-panteleyev/java-ofx</url>
+
+    <licenses>
+        <license>
+            <name>The 2-Clause BSD License</name>
+            <url>https://opensource.org/licenses/BSD-2-Clause</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Petr Panteleyev</name>
+            <email>petr-panteleyev@yandex.ru</email>
+            <organization>panteleyev.org</organization>
+            <organizationUrl>https://github.com/petr-panteleyev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/petr-panteleyev/ofx-parser.git</connection>
+        <developerConnection>scm:git:ssh://github.com:petr-panteleyev/ofx-parser.git</developerConnection>
+        <url>https://github.com/petr-panteleyev/ofx-parser/tree/master</url>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
+        <testngVersion>6.14.3</testngVersion>
+        <!-- Plugins -->
+        <mavenToolchainPluginVersion>3.0.0</mavenToolchainPluginVersion>
+        <mavenCompilerPluginVersion>3.8.1</mavenCompilerPluginVersion>
+        <mavenSurefirePluginVersion>3.0.0-M4</mavenSurefirePluginVersion>
+        <mavenSourcePluginVersion>3.2.0</mavenSourcePluginVersion>
+        <mavenJavadocPluginVersion>3.2.0</mavenJavadocPluginVersion>
+        <mavenGpgPluginVersion>1.6</mavenGpgPluginVersion>
+        <nexusStagingMavenPlugin>1.6.8</nexusStagingMavenPlugin>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testngVersion}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>${mavenToolchainPluginVersion}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <toolchains>
+                        <jdk>
+                            <version>14</version>
+                        </jdk>
+                    </toolchains>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${mavenCompilerPluginVersion}</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${mavenSourcePluginVersion}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${mavenSurefirePluginVersion}</version>
+                <configuration>
+                    <argLine>
+                        --enable-preview
+                    </argLine>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${mavenJavadocPluginVersion}</version>
+                <configuration>
+                    <notimestamp>true</notimestamp>
+                    <author>false</author>
+                    <bottom><![CDATA[Copyright &copy; 2020, Petr Panteleyev]]></bottom>
+                    <additionalOptions>-html5 --enable-preview --source ${maven.compiler.source}</additionalOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${mavenGpgPluginVersion}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexusStagingMavenPlugin}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
