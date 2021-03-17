@@ -10,7 +10,7 @@
 
     <groupId>org.panteleyev</groupId>
     <artifactId>ofx-parser</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -41,13 +41,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.release>16</maven.compiler.release>
         <testNgVersion>7.3.0</testNgVersion>
         <!-- Plugins -->
         <mavenToolchainPluginVersion>3.0.0</mavenToolchainPluginVersion>
         <mavenCompilerPluginVersion>3.8.1</mavenCompilerPluginVersion>
-        <mavenSurefirePluginVersion>3.0.0-M4</mavenSurefirePluginVersion>
+        <mavenSurefirePluginVersion>3.0.0-M5</mavenSurefirePluginVersion>
         <mavenSourcePluginVersion>3.2.0</mavenSourcePluginVersion>
         <mavenJavadocPluginVersion>3.2.0</mavenJavadocPluginVersion>
         <mavenGpgPluginVersion>1.6</mavenGpgPluginVersion>
@@ -67,32 +66,8 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-toolchains-plugin</artifactId>
-                <version>${mavenToolchainPluginVersion}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>toolchain</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <toolchains>
-                        <jdk>
-                            <version>${maven.compiler.target}</version>
-                        </jdk>
-                    </toolchains>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${mavenCompilerPluginVersion}</version>
-                <configuration>
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -112,9 +87,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${mavenSurefirePluginVersion}</version>
                 <configuration>
-                    <argLine>
-                        --enable-preview
-                    </argLine>
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
@@ -127,8 +99,8 @@
                 <configuration>
                     <notimestamp>true</notimestamp>
                     <author>false</author>
-                    <bottom><![CDATA[Copyright &copy; 2020, Petr Panteleyev]]></bottom>
-                    <additionalOptions>-html5 --enable-preview --source ${maven.compiler.source}</additionalOptions>
+                    <bottom><![CDATA[Copyright &copy; 2020, 2021, Petr Panteleyev]]></bottom>
+                    <additionalOptions>-html5 --release ${maven.compiler.release}</additionalOptions>
                 </configuration>
                 <executions>
                     <execution>
